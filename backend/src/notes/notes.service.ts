@@ -10,7 +10,7 @@ export class NotesService {
   constructor(@InjectModel(Note.name) private noteModel: Model<Note>) {}
 
   findAll() {
-    this.noteModel.find();
+    return this.noteModel.find();
   }
 
   async create(createNote: CreateNoteDto) {
@@ -27,6 +27,6 @@ export class NotesService {
   }
 
   async update(id: string, updateNote: UpdateNoteDto) {
-    return this.noteModel.findByIdAndUpdate(id, updateNote);
+    return this.noteModel.findByIdAndUpdate(id, updateNote, { new: true });
   }
 }
