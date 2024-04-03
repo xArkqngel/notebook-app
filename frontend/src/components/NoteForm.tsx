@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { createNoteRequest } from '@/api/notes';
+import { useNotes } from '@/context/useNotes';
 
 function NoteForm(){
 
@@ -9,6 +10,8 @@ function NoteForm(){
         content: '',
         isArchived: false,
     });
+
+    const { notes, setNotes } = useNotes();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setNote({
