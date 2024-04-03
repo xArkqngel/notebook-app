@@ -11,7 +11,7 @@ function NoteForm(){
         isArchived: false,
     });
 
-    const { notes, setNotes } = useNotes();
+    const {createNote } = useNotes();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setNote({
@@ -22,10 +22,7 @@ function NoteForm(){
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(note);
-        const res = await createNoteRequest(note);
-        const data = await res;
-        console.log(data);
+        createNote(note)
     }
     
     return (
