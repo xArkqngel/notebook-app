@@ -44,6 +44,7 @@ export const NoteProvider: React.FC<Props> = ({ children }) => {
   const createNote = async (note: CreateNote) => {
     const res = await createNoteRequest(note);
     const data = await res;
+    console.log(data);
     setNotes([...notes, res]);
   };
 

@@ -10,6 +10,8 @@ export class Note {
   content: string;
   @Prop({ default: false })
   isArchived: boolean;
+  @Prop([String])
+  tags: string[];
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

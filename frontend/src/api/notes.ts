@@ -5,6 +5,7 @@ export interface NoteType {
   title: string;
   content?: string;
   isArchived?: boolean;
+  tags: string[];
   createdAt?: string;
   updatedAt?: string;
 }

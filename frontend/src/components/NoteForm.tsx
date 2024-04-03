@@ -1,7 +1,17 @@
 'use client'
 import React, { useState } from 'react';
-import { createNoteRequest } from '@/api/notes';
 import { useNotes } from '@/context/useNotes';
+
+export const Tags = [
+    'work',
+    'personal',
+    'school',
+    'todo',
+    'shopping',
+    'ideas',
+    'important',
+    'other',
+];
 
 function NoteForm(){
 
@@ -9,7 +19,10 @@ function NoteForm(){
         title: '',
         content: '',
         isArchived: false,
+        tags: [""],
     });
+
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const {createNote } = useNotes();
 
@@ -20,9 +33,26 @@ function NoteForm(){
         });
     };
 
+    const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const tag = e.target.value;
+        const checked = e.target.checked;
+        
+        if (checked) {
+            setSelectedCategories([...selectedCategories, tag]);
+        } else {
+            setSelectedCategories(selectedCategories.filter(category => category !== tag));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createNote(note)
+        createNote({
+            ...note,
+            tags: selectedCategories, // Update note with selected tags
+        });
+
+        // Print the selected tags
+        console.log(selectedCategories);
     }
     
     return (
@@ -30,7 +60,15 @@ function NoteForm(){
             <form className="flex flex-col" onSubmit={handleSubmit}>
                 <input type="text" name='title' placeholder="Title" className="border-2 border-slate-400 p-2 rounded-lg bg-zinc-700 block w-full my-2" onChange={handleChange}/>
                 <textarea placeholder="Content" name='content' className="border-2 border-slate-400 p-2 rounded-lg bg-zinc-700 block w-full my-2" onChange={handleChange}></textarea>
-                <button type="submit" className="bg-green-400 px-3 block py-2 w-full" >Add Note</button>
+                <div>
+                    {Tags.map((tag) => (
+                        <label key={tag} className="mr-2">
+                            <input type="checkbox" name="tags" value={tag} onChange={handleTagChange} />
+                            {tag}
+                        </label>
+                    ))}
+                </div>
+                <button type="submit" className="bg-orange-400 px-3 block py-2 w-full" >Add Note</button>
             </form>
         </div>
     )

@@ -12,4 +12,8 @@ export class UpdateNoteDto {
   @IsBoolean()
   @IsOptional()
   isArchived?: boolean;
+
+  @IsString({ each: true })
+  @IsOptional()
+  tags?: string[];
 }

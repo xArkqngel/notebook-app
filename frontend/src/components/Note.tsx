@@ -8,10 +8,19 @@ function Note({ note }: { note: NoteType }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(note.title);
   const [editedContent, setEditedContent] = useState(note.content);
+  const [editedTags, setEditedTags] = useState<string[]>(note.tags || []);
 
   const handleUpdateNote = () => {
-    updateNote(note._id, { title: editedTitle, content: editedContent });
+    updateNote(note._id, {
+      title: editedTitle,
+      content: editedContent,
+      tags: editedTags,
+    });
     setIsEditing(false);
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setEditedTags(editedTags.filter((tag) => tag !== tagToRemove));
   };
 
   return (
@@ -72,22 +81,34 @@ function Note({ note }: { note: NoteType }) {
             className="text-black"
             onChange={(e) => setEditedContent(e.target.value)}
           />
-          <div className="flex flex-row gap-1 items-start justify-end text-black">
-            <button onClick={handleUpdateNote}>
-              <Image src={`/check.svg`} alt="save" width={21} height={20} />
-            </button>
-            <button onClick={() => setIsEditing(false)}>
-              <Image
-                src={`/xmark.svg`}
-                alt="close"
-                width={21}
-                height={20}
-              />
-            </button>
-          </div>
         </div>
       ) : (
         <p className="text-sm text-black">{note.content}</p>
+      )}
+      <div className="flex flex-wrap gap-1">
+        {editedTags.map((tag) => (
+          <div
+            key={tag}
+            className="bg-orange-400 rounded-lg px-2 text-sm flex items-center"
+          >
+            <span>{tag}</span>
+            {isEditing && (
+              <button className="ml-1" onClick={() => handleRemoveTag(tag)}>
+                <Image src={`/xmark.svg`} alt="remove" width={14} height={14} />
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+      {isEditing && (
+        <div className="flex flex-row gap-1 items-start justify-end text-black">
+          <button onClick={handleUpdateNote}>
+            <Image src={`/check.svg`} alt="save" width={21} height={20} />
+          </button>
+          <button onClick={() => setIsEditing(false)}>
+            <Image src={`/xmark.svg`} alt="close" width={21} height={20} />
+          </button>
+        </div>
       )}
     </div>
   );
