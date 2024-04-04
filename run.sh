@@ -1,9 +1,10 @@
 cd backend
 npm install
-npm run start:dev &
+npm run start &
 
 sleep 10
 
 cd ../frontend
 npm install
-npm run dev
+npm run build
+npm run start
